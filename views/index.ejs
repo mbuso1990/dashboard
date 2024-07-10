@@ -1,0 +1,91 @@
+<!DOCTYPE html> <html lang="en"> <head> <meta charset="UTF-8"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <title>Dashboard</title> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> 
+    <link rel="stylesheet" href="/css/styles.css"> </head> 
+    <body> <div class="sidebar"> <div class="logo">
+         <a href="/"><img src="images/logo.png" alt="Bitepoint Logo"></a> 
+        </div> <nav>
+    <ul>
+        <li><a href="#" data-link="dashboard" class="nav-link"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+        <li><a href="#" data-link="orders" class="nav-link"><i class="fas fa-receipt"></i> Orders</a></li>
+        <li><a href="#" data-link="products" class="nav-link"><i class="fas fa-box"></i> Products</a></li>
+        <li><a href="#" data-link="users" class="nav-link"><i class="fas fa-users"></i> Users</a></li>
+        <li><a href="#" data-link="settings" class="nav-link"><i class="fas fa-cogs"></i> Settings</a></li>
+    </ul>
+</nav>
+
+                    <div class="user-info">
+                         <img src="https://lh3.googleusercontent.com/ogw/AF2bZyjuZGX6TcEF26tYojPFqhw1UwbOf6qjUMngIktCPDuVH4r8=s32-c-mo" alt="User Image"> 
+                         <p>Gladina Samantha<br>Waiter</p>
+                         </div> <div class="logout"> <a href="#" style="background-color: #ffcb44;color: black;"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                         </div> </div> <div class="main-content"> <header> <div class="header-title"> Nice! We have a lot of orders <i style="color: #ffb805;" class="fas fa-smile"></i> </div> 
+                            <button class="create-order-btn" style="background-color: #ffcb44;color: black;font-weight: 500;">+ CREATE NEW ORDER</button> </header> <div id="content" class="dashboard-content"> <!-- Cards --> <div class="cards"> <div class="card card-new-orders" style="background-color: #066a69; color: #ffffff;"> <h2>New Orders</h2> <p id="new-orders-count"></p> <small>+ Updated every new order</small> </div>
+
+    <div class="card card-total-orders" style="background-color: #ffffff; color: #000000;">
+                    <h2>Total Orders</h2>
+                    <p id="total-orders-count"></p>
+                    <small>+ 2.5% than usual</small>
+                </div>
+    
+                <div class="card card-waiting-list">
+                    <h2>Waiting List</h2>
+                    <ul id="waiting-list"></ul>
+                </div>
+    
+                <div class="card card-order-list">
+                    <h2>Order List</h2>
+                    <ul id="order-list"></ul>
+                </div>
+    
+                <div class="card card-payment">
+                    <h2>Payment</h2>
+                    <ul id="payment-list"></ul>
+                </div>
+    
+                <div class="card card-popular-dishes">
+                    <h2>Popular Dishes</h2>
+                    <ul id="popular-dishes"></ul>
+                </div>
+    
+                <div class="card card-out-of-stock">
+                    <h2>Out of Stock</h2>
+                    <ul id="out-of-stock"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
+   
+      <script>
+document.addEventListener('DOMContentLoaded', () => {
+    const links = document.querySelectorAll('.nav-link');
+
+    links.forEach(link => {
+        link.addEventListener('click', async (event) => {
+            event.preventDefault();
+
+            // Get the link name for routing
+            const linkName = link.getAttribute('data-link');
+            if (linkName) {
+                try {
+                    const response = await fetch(`/${linkName}`);
+                    if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+                    const html = await response.text();
+
+                    // Update the #content div with the fetched HTML
+                    document.querySelector('#content').innerHTML = html;
+                } catch (err) {
+                    console.error('Error fetching content:', err);
+                }
+            }
+        });
+    });
+});
+
+
+
+</script>
+
+
+    
+    </body> </html>

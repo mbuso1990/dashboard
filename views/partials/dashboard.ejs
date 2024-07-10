@@ -1,0 +1,25 @@
+<!-- Content for Dashboard -->
+<div class="card card-new-orders" style="background-color: #066a69; color: #ffffff;">
+  <h2>New Orders</h2>
+  <p><%= newOrders %></p>
+  <small>+ Updated every new order</small>
+</div>
+
+<div class="card card-total-orders" style="background-color: #ffffff; color: #000000;">
+  <h2>Total Orders</h2>
+  <p><%= totalOrders %></p>
+  <small>+ 2.5% than usual</small>
+</div>
+
+<div class="card card-waiting-list">
+  <h2>Waiting List</h2>
+  <ul>
+      <% waitingList.forEach(order => { %>
+          <li>
+              <p>Order ID: <%= order._id %></p>
+              <p>Status: <%= order.status %></p>
+              <p>Date: <%= new Date(order.date).toLocaleDateString() %></p>
+          </li>
+      <% }) %>
+  </ul>
+</div>

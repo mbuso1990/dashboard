@@ -1,0 +1,48 @@
+<%- include('../partials/header', { title: 'Orders' }) %>
+<div class="content p-6 bg-gray-100 min-h-screen">
+  <div class="header-row flex justify-between items-center mb-6">
+    <h2 class="text-2xl font-bold">Orders (<%= orders.length %>)</h2>
+    <!-- Add any additional buttons or actions here -->
+  </div>
+  <div class="overflow-x-auto">
+    <table class="min-w-full bg-white border border-gray-200">
+      <thead class="bg-gray-200">
+        <tr>
+          <th class="py-3 px-4 border-b">Order ID</th>
+          <th class="py-3 px-4 border-b">Product Name</th>
+          <th class="py-3 px-4 border-b">Quantity</th>
+          <th class="py-3 px-4 border-b">Delivery Address</th>
+          <th class="py-3 px-4 border-b">Delivery Fee</th>
+          <th class="py-3 px-4 border-b">Total Price</th>
+          <th class="py-3 px-4 border-b">Status</th>
+          <th class="py-3 px-4 border-b">Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% orders.forEach(order => { %>
+        <tr>
+          <td class="py-3 px-4 border-b"><%= order._id %></td>
+          <td class="py-3 px-4 border-b">
+            <%= order.product ? order.product.name : 'N/A' %>
+          </td>
+          <td class="py-3 px-4 border-b"><%= order.quantity %></td>
+          <td class="py-3 px-4 border-b"><%= order.deliveryAddress %></td>
+          <td class="py-3 px-4 border-b">
+            $<%= (order.deliveryFee != null ? order.deliveryFee.toFixed(2) :
+            '-') %>
+          </td>
+          <td class="py-3 px-4 border-b">
+            $<%= (order.totalPrice != null ? order.totalPrice.toFixed(2) : '-')
+            %>
+          </td>
+          <td class="py-3 px-4 border-b"><%= order.status %></td>
+          <td class="py-3 px-4 border-b">
+            <%= new Date(order.date).toLocaleDateString() %>
+          </td>
+        </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+</div>
+<%- include('../partials/footer') %>
