@@ -6,6 +6,7 @@ require("dotenv").config();
 const Order = require("./models/order");
 const Product = require("./models/product");
 const path = require("path");
+const cors = require("cors");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -24,6 +25,12 @@ app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
 // Middleware
+app.use(
+  cors({
+    origin: ["http://localhost:5173"],
+    credentials: true,
+  })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true })); // Middleware to parse URL-encoded data
 app.use(express.static(path.join(__dirname, "public"))); // Serve static files from 'public' folder

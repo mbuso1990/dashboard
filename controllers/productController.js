@@ -4,20 +4,18 @@ const { showLogs } = require("../utils/logger");
 
 exports.getAllProducts = async (req, res) => {
   try {
-    const products = await Product.find();
-    showLogs("products", products);
-    res.render("index", { products }); // Pass products array to the view
+    const products = await Product.find().sort({ _id: -1 });
+    res.status(200).json(products);
   } catch (err) {
     console.error("Error fetching products:", err);
     res.status(500).send("Server Error");
   }
 };
 
-// Assuming renderProductsPage is also used for rendering products
 exports.renderProductsPage = async (req, res) => {
   try {
     const products = await Product.find();
-    res.render("products", { products }); // Pass products array to the view
+    res.render("products", { products });
   } catch (err) {
     console.error("Error rendering products page:", err);
     res.status(500).send("Server Error");
@@ -25,23 +23,26 @@ exports.renderProductsPage = async (req, res) => {
 };
 
 exports.createProduct = async (req, res) => {
-  const { name, price, description } = req.body;
+  const { name, price, description, category, quantity } = req.body;
 
   try {
     // Validate input
-    if (!name || !price || !description) {
-      return res
-        .status(400)
-        .json({ message: "Name, price, and description are required" });
+    if (!name || !price || !category || !quantity) {
+      return res.status(400).json({
+        message: "Name, price, category and quantity are all required",
+      });
     }
 
     const newProduct = new Product({
       name,
       price,
       description,
+      quantity,
+      category,
     });
 
     const savedProduct = await newProduct.save();
+    showLogs("savedProduct", savedProduct);
     res.status(201).json(savedProduct);
   } catch (err) {
     console.error(err);
@@ -63,23 +64,21 @@ exports.getOrderById = async (req, res) => {
   }
 };
 
-// Update order status
-
 exports.updateProduct = async (req, res) => {
   try {
     const productId = req.params.id;
-    const { name, price, description } = req.body;
+    const { name, price, description, quantity, currentStock, category } =
+      req.body;
 
-    // Validate input
-    if (!productId || !name || !price || !description) {
+    if (!productId || !name || !price || !quantity || !category) {
       return res.status(400).json({
-        message: "Product ID, name, price, and description are required",
+        message: "Product Id, name, price, quantity, category are required",
       });
     }
 
     const updatedProduct = await Product.findByIdAndUpdate(
       productId,
-      { name, price, description },
+      { name, price, description, quantity, currentStock, category },
       { new: true }
     );
 
@@ -93,5 +92,20 @@ exports.updateProduct = async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+exports.deleteProduct = async (req, res) => {
+  try {
+    const currentProduct = await Product.findById(req.params.id);
+    if (!currentProduct) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    await Product.findByIdAndDelete(req.params.id);
+    res.status(200).json({ message: "Product deleted successfully" });
+  } catch (err) {
+    console.error("Error fetching order:", err);
+    res.status(500).json({ message: "Server Error" });
   }
 };

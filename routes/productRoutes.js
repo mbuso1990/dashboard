@@ -1,17 +1,12 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const productController = require('../controllers/productController');
+const productController = require("../controllers/productController");
 
-// JSON response route
-router.get('/api', productController.getAllProducts);
-
+router.get("/all", productController.getAllProducts);
 // EJS rendering route
-router.get('/', productController.renderProductsPage);
-
-// Create a new product
-router.post('/', productController.createProduct);
-
-// Update a product by ID
-router.put('/:id', productController.updateProduct);
+router.get("/", productController.renderProductsPage);
+router.post("/", productController.createProduct);
+router.put("/:id", productController.updateProduct);
+router.delete("/:id", productController.deleteProduct);
 
 module.exports = router;
