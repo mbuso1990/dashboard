@@ -27,7 +27,7 @@ app.set("view engine", "ejs");
 // Middleware
 app.use(
   cors({
-    origin: ["http://localhost:5173"],
+    origin: ["http://localhost:5173", "https://merliz-holdings.vercel.app/"],
     credentials: true,
   })
 );
