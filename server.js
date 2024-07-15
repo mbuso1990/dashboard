@@ -27,13 +27,13 @@ app.set("view engine", "ejs");
 // Middleware
 app.use(
   cors({
-    origin: ["http://localhost:5173", "https://merliz-holdings.vercel.app/"],
+    origin: ["http://localhost:5173", "https://merliz-holdings.vercel.app"],
     credentials: true,
   })
 );
 app.use(express.json());
-app.use(express.urlencoded({ extended: true })); // Middleware to parse URL-encoded data
-app.use(express.static(path.join(__dirname, "public"))); // Serve static files from 'public' folder
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, "public")));
 
 // Define routes
 app.use("/products", productRoutes);
