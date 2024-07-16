@@ -23,13 +23,12 @@ exports.renderProductsPage = async (req, res) => {
 };
 
 exports.createProduct = async (req, res) => {
-  const { name, price, description, category, quantity } = req.body;
+  const { name, price, description, category, quantity, image } = req.body;
 
   try {
-    // Validate input
-    if (!name || !price || !category || !quantity) {
+    if (!name || !image || !price || !category || !quantity) {
       return res.status(400).json({
-        message: "Name, price, category and quantity are all required",
+        message: "Name, image, price, category and quantity are all required",
       });
     }
 
@@ -37,6 +36,7 @@ exports.createProduct = async (req, res) => {
       name,
       price,
       description,
+      image,
       quantity,
       category,
     });
@@ -50,7 +50,6 @@ exports.createProduct = async (req, res) => {
   }
 };
 
-// Get a specific order by ID
 exports.getOrderById = async (req, res) => {
   try {
     const order = await Order.findById(req.params.id).populate("product");
@@ -67,14 +66,22 @@ exports.getOrderById = async (req, res) => {
 exports.updateProduct = async (req, res) => {
   try {
     const productId = req.params.id;
-    const { name, price, description, quantity, currentStock, category } =
-      req.body;
+    const {
+      name,
+      price,
+      description,
+      quantity,
+      currentStock,
+      category,
+      image,
+    } = req.body;
 
-    console.log(req.body, productId);
+    console.log(req.body);
 
-    if (!productId || !name || !price || !category) {
+    if (!productId || !name || !price || !category || !image) {
       return res.status(400).json({
-        message: "Product Id, name, price, quantity, category are all required",
+        message:
+          "Product Id, name, image, price, quantity, category are all required",
       });
     }
 
@@ -86,6 +93,7 @@ exports.updateProduct = async (req, res) => {
         description,
         quantity: quantity || 0,
         currentStock,
+        image,
         category,
       },
       { new: true }
