@@ -70,15 +70,24 @@ exports.updateProduct = async (req, res) => {
     const { name, price, description, quantity, currentStock, category } =
       req.body;
 
-    if (!productId || !name || !price || !quantity || !category) {
+    console.log(req.body, productId);
+
+    if (!productId || !name || !price || !category) {
       return res.status(400).json({
-        message: "Product Id, name, price, quantity, category are required",
+        message: "Product Id, name, price, quantity, category are all required",
       });
     }
 
     const updatedProduct = await Product.findByIdAndUpdate(
       productId,
-      { name, price, description, quantity, currentStock, category },
+      {
+        name,
+        price,
+        description,
+        quantity: quantity || 0,
+        currentStock,
+        category,
+      },
       { new: true }
     );
 
