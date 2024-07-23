@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const productRoutes = require("./routes/productRoutes");
 const orderRoutes = require("./routes/orderRoutes");
+const userRoutes = require("./routes/userRoutes");
 require("dotenv").config();
 const Order = require("./models/order");
 const Product = require("./models/product");
@@ -38,6 +39,7 @@ app.use(express.static(path.join(__dirname, "public")));
 // Define routes
 app.use("/products", productRoutes);
 app.use("/orders", orderRoutes);
+app.use("/auth", userRoutes);
 
 // Dashboard Route
 app.get("/", async (req, res) => {
